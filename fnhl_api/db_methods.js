@@ -60,7 +60,6 @@ async function get_distinct_values(collection_name, key_name){
     client.close();
     return distinctValues.map(element => element["_id"]);
 }
-get_distinct_values('teams', 'team_code');
 module.exports = {
     add_team: upsert_team,
     add_player: upsert_player,
