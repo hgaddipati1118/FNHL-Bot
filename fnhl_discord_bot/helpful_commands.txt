@@ -1,0 +1,3 @@
+Just cmd commands helpful to know
+
+node deploy-commands.js -- to register commands

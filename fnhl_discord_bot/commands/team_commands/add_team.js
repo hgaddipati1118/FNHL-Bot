@@ -22,13 +22,14 @@ module.exports = {
                 .setDescription('Hexcode in format #abcdef')
                 .setRequired(true)),
     async execute(interaction) {
+        await interaction.reply('Adding team right now ...');
         const team_json = {
             'team_code': interaction.options.getString('team_code'),
-            'team_name': interaction.options.getInteger('team_name'),
+            'team_name': interaction.options.getString('team_name'),
             'stadium': interaction.options.getChannel('stadium').name,
             'hex_code': interaction.options.getString('color'),
         };
-        MongoHelper.add_team(team_json);
-        await interaction.reply('${team_name} added!');
+        await MongoHelper.add_team(team_json);
+        await interaction.editReply(`${team_json.team_name} added!`);
     },
 };
