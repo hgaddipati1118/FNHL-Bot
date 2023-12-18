@@ -156,8 +156,24 @@ const four_cp_opp_p_ranges = [
     350, 425, 475, 499, 500
 ]
 // Export the ranges
-export { passing_ranges, deking_ranges, penalty_shot_ranges, faceoff_ranges,
- zero_cp_ranges, one_cp_ranges, two_cp_ranges, three_cp_ranges, four_cp_ranges,
- zero_cp_p_ranges, one_cp_p_ranges, two_cp_p_ranges, three_cp_p_ranges, four_cp_p_ranges,
- zero_cp_opp_p_ranges, one_cp_opp_p_ranges, two_cp_opp_p_ranges, three_cp_opp_p_ranges, four_cp_opp_p_ranges  
+module.exports = {
+    passing_ranges: passing_ranges,
+    deking_ranges: deking_ranges,
+    penalty_shot_ranges: penalty_shot_ranges,
+    faceoff_ranges: faceoff_ranges,
+    zero_cp_ranges: zero_cp_ranges,
+    one_cp_ranges: one_cp_ranges, 
+    two_cp_ranges: two_cp_ranges, 
+    three_cp_ranges: three_cp_ranges, 
+    four_cp_ranges: four_cp_ranges,
+    zero_cp_p_ranges: zero_cp_p_ranges, 
+    one_cp_p_ranges: one_cp_p_ranges, 
+    two_cp_p_ranges: two_cp_p_ranges, 
+    three_cp_p_ranges: three_cp_p_ranges, 
+    four_cp_p_ranges: four_cp_p_ranges,
+    zero_cp_opp_p_ranges: zero_cp_opp_p_ranges, 
+    one_cp_opp_p_ranges: one_cp_opp_p_ranges, 
+    two_cp_opp_p_ranges: two_cp_opp_p_ranges, 
+    three_cp_opp_p_ranges: three_cp_opp_p_ranges, 
+    four_cp_opp_p_ranges: four_cp_opp_p_ranges  
 };
