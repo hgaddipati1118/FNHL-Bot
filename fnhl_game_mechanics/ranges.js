@@ -161,19 +161,7 @@ module.exports = {
     deking_ranges: deking_ranges,
     penalty_shot_ranges: penalty_shot_ranges,
     faceoff_ranges: faceoff_ranges,
-    zero_cp_ranges: zero_cp_ranges,
-    one_cp_ranges: one_cp_ranges, 
-    two_cp_ranges: two_cp_ranges, 
-    three_cp_ranges: three_cp_ranges, 
-    four_cp_ranges: four_cp_ranges,
-    zero_cp_p_ranges: zero_cp_p_ranges, 
-    one_cp_p_ranges: one_cp_p_ranges, 
-    two_cp_p_ranges: two_cp_p_ranges, 
-    three_cp_p_ranges: three_cp_p_ranges, 
-    four_cp_p_ranges: four_cp_p_ranges,
-    zero_cp_opp_p_ranges: zero_cp_opp_p_ranges, 
-    one_cp_opp_p_ranges: one_cp_opp_p_ranges, 
-    two_cp_opp_p_ranges: two_cp_opp_p_ranges, 
-    three_cp_opp_p_ranges: three_cp_opp_p_ranges, 
-    four_cp_opp_p_ranges: four_cp_opp_p_ranges  
+    cp_ranges: [zero_cp_ranges, one_cp_ranges, two_cp_ranges, three_cp_ranges, four_cp_ranges],
+    cp_p_ranges: [zero_cp_p_ranges, one_cp_p_ranges, two_cp_p_ranges, three_cp_p_ranges, four_cp_p_ranges],
+    cp_opp_p_ranges: [zero_cp_opp_p_ranges, one_cp_opp_p_ranges, two_cp_opp_p_ranges, three_cp_opp_p_ranges, four_cp_opp_p_ranges]
 };
