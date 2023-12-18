@@ -1,4 +1,6 @@
 * Need to way make sure team has only 1 GK, 1 D, 1 F
--> Can have verification when starting game
+-> Have each team have lineup
+-> Need to provide command to update team lineup
 
 * Need to simulate game_play_logic
+-> Need to actually run a play

@@ -26,7 +26,7 @@ module.exports = {
         const team_json = {
             'team_code': interaction.options.getString('team_code'),
             'team_name': interaction.options.getString('team_name'),
-            'stadium': interaction.options.getChannel('stadium').name,
+            'stadium': interaction.options.getChannel('stadium').id,
             'hex_code': interaction.options.getString('color'),
         };
         await MongoHelper.add_team(team_json);
