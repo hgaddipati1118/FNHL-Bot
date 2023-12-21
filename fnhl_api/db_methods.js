@@ -60,10 +60,29 @@ async function get_distinct_values(collection_name, key_name){
     client.close();
     return distinctValues.map(element => element["_id"]);
 }
+
+//Return a single document given filter, used for finding specific player or team
+async function find_one_document(collection_name, filter) {
+  const client = create_mongo_client();
+  try {
+    const db = await create_mongo_db_conn(client);
+    const collection = db.collection(collection_name);
+    const result = await collection.findOne(filter);
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  } finally {
+      client.close();
+      console.log('Connection closed');
+  }
+}
+
 module.exports = {
     add_team: upsert_team,
     add_player: upsert_player,
     edit_team: upsert_team,
     edit_player: upsert_player,
-    get_distinct_values: get_distinct_values
+    get_distinct_values: get_distinct_values,
+    get_document: find_one_document
 };

@@ -1,9 +1,15 @@
 const { SlashCommandBuilder } = require('discord.js');
 const MongoHelper = require('../../../fnhl_api/db_methods');
+const Embeds = require('../../../fnhl_game_mechanics/embed');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('start_game')
         .setDescription('Start a game')
+        .addChannelOption(option =>
+            option
+                .setName('stadium')
+                .setDescription('Game Stadium')
+                .setRequired(true))
         .addStringOption(option =>
             option
                 .setName('home_team_code')
@@ -47,6 +53,8 @@ module.exports = {
                 .setDescription('Away Forward')
                 .setRequired(true)),
     async execute(interaction) {
+        await interaction.reply('creating game');
+        const stadium = interaction.options.getChannel('stadium');
         const home_team = interaction.options.getString('home_team_code');
         const away_team = interaction.options.getString('away_team_code');
         const home_gk = interaction.options.getUser('home_gk');
@@ -55,7 +63,47 @@ module.exports = {
         const away_gk = interaction.options.getUser('away_gk');
         const away_d = interaction.options.getUser('away_d');
         const away_f = interaction.options.getUser('away_f');
-        await interaction.reply('creating game');
+
+        // Gets positions, name, and discord_id of all players
+        const player_info = {
+            home_gk: await MongoHelper.get_document('players', { discord_id: home_gk.id }),
+            home_d: await MongoHelper.get_document('players', { discord_id: home_d.id }),
+            home_f: await MongoHelper.get_document('players', { discord_id: home_f.id }),
+            away_gk: await MongoHelper.get_document('players', { discord_id: away_gk.id }),
+            away_d: await MongoHelper.get_document('players', { discord_id: away_d.id }),
+            away_f: await MongoHelper.get_document('players', { discord_id: away_f.id }),
+        };
+
+        //  Initial Game State
+        const game_info = {
+            moves: 25,
+            period: 1,
+            home_score: 0,
+            away_score: 0,
+            state: 'faceoff',
+            waiting_on: 'D', // D = defense, O = Offense
+            clean_passes: 0,
+            poss: 'H', // H = home, A = away
+            puck_pos: 'D', // Who on offense has puck (D = defense, F = forward)
+            home_gk_nums: [],
+            away_gk_nums: [],
+            home_gk_pulled: false,
+            away_gk_pulled: false,
+            last_message: new Date(),
+        };
+
+        const game_json = {
+            channel_id: stadium.id,
+            player_info: player_info,
+            home_team: home_team,
+            away_team: away_team,
+            game_active: true,
+            game_info: game_info,
+        };
+        const game_start_embed = Embeds.game_start(game_json);
+        await stadium.send({ embeds: [game_start_embed] });
+        await interaction.editReply('Game created!!!');
+
     },
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
