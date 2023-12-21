@@ -80,6 +80,7 @@ module.exports = {
             period: 1,
             home_score: 0,
             away_score: 0,
+            d_num: 1,
             state: 'faceoff',
             waiting_on: 'D', // D = defense, O = Offense
             clean_passes: 0,
@@ -102,6 +103,7 @@ module.exports = {
         };
         const game_start_embed = Embeds.game_start(game_json);
         await stadium.send({ embeds: [game_start_embed] });
+        await MongoHelper.add_game(game_json);
         await interaction.editReply('Game created!!!');
 
     },

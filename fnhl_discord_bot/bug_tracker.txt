@@ -1,0 +1,4 @@
+Bugs to track (stuff I think of as developing that I will fix eventually)
+-> Make sure only one game can be created per channel
+-> Make sure players assigned for each position are of proper type
+-> Error handling when game command used in channel without an active game

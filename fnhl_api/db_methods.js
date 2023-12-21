@@ -38,6 +38,24 @@ async function upsert_player(player_json, id_type){
     client.close();
 }
 
+async function upsert_game(game_json){
+  const client = create_mongo_client();
+  const db = create_mongo_db_conn(client);
+  const games = db.collection('games');
+  let filter = { channel_id: game_json['channel_id'], game_active: true }; 
+  
+  /* Set the upsert option to insert a document if no documents match
+  the filter */
+  const options = { upsert: true };
+  // Specify the update to set a value for the plot field
+  const updateDoc = {
+    $set: game_json,
+  };
+  // Update the first document that matches the filter
+  const result = await games.updateOne(filter, updateDoc, options);
+  client.close();
+}
+
 // Gets all the unique values for a key in a collection across documents
 async function get_distinct_values(collection_name, key_name){
     const client = create_mongo_client();
@@ -81,8 +99,10 @@ async function find_one_document(collection_name, filter) {
 module.exports = {
     add_team: upsert_team,
     add_player: upsert_player,
+    add_game: upsert_game,
     edit_team: upsert_team,
     edit_player: upsert_player,
+    update_game: upsert_game,
     get_distinct_values: get_distinct_values,
     get_document: find_one_document
 };

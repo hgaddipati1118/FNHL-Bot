@@ -4,3 +4,9 @@
 
 * Need to simulate game_play_logic
 -> Need to actually run a play
+
+* DOG Capabilities
+-> On pings add option to see last ping
+
+* Goalie Numbers
+-> Need options to view goalie numbers

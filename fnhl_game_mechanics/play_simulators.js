@@ -1,5 +1,5 @@
-const helper = require('helper_methods.js');
-const ranges = require('ranges.js');
+const helper = require('./helper_methods');
+const ranges = require('./ranges');
 
 //Function simulates user passing
 function simulate_pass(player_type, defensive_num, offensive_num){
