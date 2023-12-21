@@ -1,9 +1,8 @@
-const helper = require('./helper_methods');
+
 const ranges = require('./ranges');
 
 //Function simulates user passing
-function simulate_pass(player_type, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_pass(player_type, diff){
     //Passing Ranges go [Goal, Breakaway, 2 cleans, Clean, Sloppy, Offsides, Turnover, Penalty, Opp. Goal]
     let pass_range = ranges.passing_ranges[player_type];
     let results = ["Goal", "Breakaway", "2Cleans", "Clean", "Sloppy", "Offsides", "Turnover", "Penalty", "OppGoal"];
@@ -15,8 +14,7 @@ function simulate_pass(player_type, defensive_num, offensive_num){
 }
 
 //Function simulates user deking
-function simulate_deke(player_type, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_deke(player_type, diff){
     //Deking Ranges [Goal, Breakaway, 2 cleans, Success, Fail, Penalty, Opp. Goal]
     let deking_range = ranges.deke_ranges[player_type];
     let results = ["Goal", "Breakaway", "2Cleans", "Success", "Fail", "Penalty", "OppGoal"];
@@ -28,8 +26,7 @@ function simulate_deke(player_type, defensive_num, offensive_num){
 }
 
 //Function simulates user taking penalty/breakway
-function simulate_penalty(player_type, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_penalty(player_type, diff){
     //Penalty Shot Ranges [Goal, Save]
     let penalty_range = ranges.penalty_shot_ranges[player_type];
     let results = ["Goal", "Save"];
@@ -41,10 +38,9 @@ function simulate_penalty(player_type, defensive_num, offensive_num){
 }
 
 //Function simulates user faceoff
-function simulate_faceoff(defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_faceoff(diff){
     //Faceoff Ranges [Win +1 CP, Win, Lose, Lose +1 CP]
-    let faceoff_range = ranges.faceoff_ranges[player_type];
+    let faceoff_range = ranges.faceoff_ranges;
     let results = ["WinCP", "Win","Loss","LossCP"];
     let result = 0;
     while(faceoff_range[result] < diff){
@@ -54,8 +50,7 @@ function simulate_faceoff(defensive_num, offensive_num){
 }
 
 //Function simulates user shot without own goalie or opp. goalie pulled
-function simulate_shot_normal(clean_passes, player_type, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_shot_normal(clean_passes, player_type, diff){
     //Shot Ranges [Goal, Rebound, Save, Block, Penalty, Opp. Goal]
     let shot_range = ranges.cp_ranges[clean_passes][player_type];
     let results = ["Goal", "Rebound","Save","Block", "Penalty", "OppGoal"];
@@ -67,8 +62,7 @@ function simulate_shot_normal(clean_passes, player_type, defensive_num, offensiv
 }
 
 //Function simulates user shot with own goalie pulled and opp. goalie not pulled
-function simulate_shot_goalie_pulled(clean_passes, player_type, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_shot_goalie_pulled(clean_passes, player_type, diff){
     //Shot Ranges [Goal, Rebound, Save, Block, Penalty, Opp. Goal]
     let shot_range = ranges.cp_p_ranges[clean_passes][player_type];
     let results = ["Goal", "Rebound","Save","Block", "Penalty", "OppGoal"];
@@ -80,8 +74,7 @@ function simulate_shot_goalie_pulled(clean_passes, player_type, defensive_num, o
 }
 
 //Function simulates user shot with opp. goalie pulled
-function simulate_shot_opp_goalie_pulled(clean_passes, defensive_num, offensive_num){
-    let diff = helper.calculate_diff(defensive_num, offensive_num);
+function simulate_shot_opp_goalie_pulled(clean_passes, diff){
     //Shot Ranges [Goal, Rebound, Save, Block, Penalty, Opp. Goal]
     let shot_range = ranges.cp_opp_p_ranges[clean_passes];
     let results = ["Goal", "Rebound","Save","Block", "Penalty", "OppGoal"];

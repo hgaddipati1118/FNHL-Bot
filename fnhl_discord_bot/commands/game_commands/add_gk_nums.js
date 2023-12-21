@@ -33,8 +33,8 @@ module.exports = {
             interaction.editReply('You are not a goalie for a game in this channel');
             return;
         }
-        await MongoHelper.update_game(game_json);
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await MongoHelper.update_game(game_json);
 
     },
 };
