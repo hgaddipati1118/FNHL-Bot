@@ -217,6 +217,7 @@ function run_pass(game_json, offensive_num){
         game_info['waiting_on'] = 'D';
     } 
     game_info['moves'] -= 1;
+    game_info['clean_passes'] = Math.min(game_info['clean_passes'], 4);
     const embed = Embed.play_result(game_json, game_json['game_info']['state'], offensive_num, game_info['d_num'], diff, play_result);
     return embed;
 }
@@ -224,7 +225,8 @@ function run_pass(game_json, offensive_num){
 function run_deke(game_json, offensive_num){
     const game_info = game_json['game_info'];
     const diff = helper.calculate_diff(game_info['d_num'], offensive_num);
-    const play_result = simulator.simulate_pass(get_player_type(game_json), diff);
+    const play_result = simulator.simulate_deke(get_player_type(game_json), diff);
+    console.log(play_result);
     if(play_result == "Goal"){
         if(game_info['poss'] == 'H'){
             game_info['home_score'] += 1;
@@ -273,6 +275,7 @@ function run_deke(game_json, offensive_num){
         game_info['waiting_on'] = 'D';
     } 
     game_info['moves'] -= 1;
+    game_info['clean_passes'] = Math.min(game_info['clean_passes'], 4);
     const embed = Embed.play_result(game_json, game_json['game_info']['state'], offensive_num, game_info['d_num'], diff, play_result);
     return embed;
 }

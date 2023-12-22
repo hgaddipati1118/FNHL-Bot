@@ -34,7 +34,9 @@ module.exports = {
             game_json['game_info']['last_message'] = new Date();
             interaction.editReply('Deke processed :)');
         }
+        await MongoHelper.update_game(game_json);
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
         await MongoHelper.update_game(game_json);
     },
 };

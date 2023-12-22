@@ -45,6 +45,7 @@ function game_start_embed(game_json){
 }
 
 function waiting_on_embed(game_json){
+    helper.update_period(game_json);
     const game_info = game_json['game_info'];
     const game_state = helper.get_game_state(game_json);
     const embed = {
@@ -73,7 +74,6 @@ function waiting_on_embed(game_json){
             },
         ],
     };
-    helper.update_period(game_json);
     return embed;
 }
 

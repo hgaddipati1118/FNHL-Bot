@@ -16,7 +16,7 @@ function simulate_pass(player_type, diff){
 //Function simulates user deking
 function simulate_deke(player_type, diff){
     //Deking Ranges [Goal, Breakaway, 2 cleans, Success, Fail, Penalty, Opp. Goal]
-    let deking_range = ranges.deke_ranges[player_type];
+    let deking_range = ranges.deking_ranges[player_type];
     let results = ["Goal", "Breakaway", "2Cleans", "Success", "Fail", "Penalty", "OppGoal"];
     let result = 0;
     while(deking_range[result] < diff){

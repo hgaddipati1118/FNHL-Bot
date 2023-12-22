@@ -16,14 +16,17 @@ module.exports = {
         await interaction.reply('Processing shot ...');
         const shot_number = interaction.options.getInteger('shot');
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
+        if (game_json['game_info']['waiting_on'] == 'D') {
+            game_json['game_info']['waiting_on'] = 'O';
+            if (game_json['game_info']['state'] == 'defense') {
+                game_json['game_info']['state'] = 'deke, /pass, /shot';
+            }
+        }
         if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;
         }
-        if (game_json['game_info']['waiting_on'] == 'D') {
-            await interaction.editReply('Not waiting on a response from you');
-            return;
-        }
+
         if (game_json['game_info']['state'] != 'deke, /pass, /shot') {
             await interaction.editReply('You seemed to use the wrong command');
             return;
@@ -35,6 +38,7 @@ module.exports = {
             interaction.editReply('Shot processed :)');
         }
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
         await MongoHelper.update_game(game_json);
     },
 };

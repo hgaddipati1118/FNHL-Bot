@@ -100,8 +100,8 @@ module.exports = {
     add_team: upsert_team,
     add_player: upsert_player,
     add_game: upsert_game,
-    edit_team: upsert_team,
-    edit_player: upsert_player,
+    update_team: upsert_team,
+    update_player: upsert_player,
     update_game: upsert_game,
     get_distinct_values: get_distinct_values,
     get_document: find_one_document

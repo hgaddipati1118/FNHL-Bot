@@ -85,7 +85,7 @@ module.exports = {
             waiting_on: 'D', // D = defense, O = Offense
             clean_passes: 0,
             poss: 'H', // H = home, A = away
-            puck_pos: 'D', // Who on offense has puck (D = defense, F = forward)
+            puck_pos: 'F', // Who on offense has puck (D = defense, F = forward)
             home_gk_nums: [],
             away_gk_nums: [],
             home_gk_pulled: false,

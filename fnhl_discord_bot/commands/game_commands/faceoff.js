@@ -29,6 +29,7 @@ module.exports = {
         if (game_json['game_info']['waiting_on'] == 'D') {
             game_json['game_info']['d_num'] = helper_methods.convert_num(faceoff_number);
             game_json['game_info']['waiting_on'] = 'O';
+            game_json['game_info']['puck_pos'] = 'F';
             game_json['game_info']['last_message'] = new Date();
             interaction.editReply(game_json['game_info']['d_num'] + ' is your faceoff number');
         }
@@ -37,6 +38,7 @@ module.exports = {
             await interaction.channel.send({ embeds: [Run_Play.run_faceoff(game_json, helper_methods.convert_num(faceoff_number))] });
         }
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
         await MongoHelper.update_game(game_json);
     },
 };

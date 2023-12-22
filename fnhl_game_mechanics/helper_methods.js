@@ -55,7 +55,7 @@ function convert_num(number){
 
 //Moves to next period when period over
 function update_period(game_json){
-    if(game_json['game_info']['moves'] == 0){
+    if(game_json['game_info']['moves'] <= 0){
         if(game_json['game_info']['state'] == 'penalty'){
             return;
         }
@@ -63,7 +63,7 @@ function update_period(game_json){
             return;
         }
         game_json['game_info']['period'] += 1;
-        game_json['game_info']['moves'] = 25;
+        game_json['game_info']['moves'] = (game_json['game_info']['period'] > 3)? 15:25;
         game_json['game_info']['clean_passes'] = 0;
         game_json['game_info']['waiting_on'] = 'D';
         game_json['game_info']['state'] = 'faceoff';
@@ -73,12 +73,22 @@ function user_waiting_on(game_json){
     const game_info = game_json["game_info"];
     const player_info = game_json["player_info"];
     if(game_info['away_gk_nums'].length < 1 || game_info["home_gk_nums"] < 1){
-        return 0; //Waiting on goalies so shouldn't have any actions work
+        if(game_info['away_gk_nums'].length < 1){
+            return player_info["away_gk"]["discord_id"];
+        } else {
+            return player_info["home_gk"]["discord_id"];
+        }
     }
     let player_waiting_on = player_info["away_d"]["discord_id"];
     if( game_info['waiting_on'] == 'D'){
+        if(game_info["state"] == 'faceoff'){
+            player_waiting_on = player_info["away_f"]["discord_id"];
+        }
         if(game_info["poss"] == 'A'){
             player_waiting_on = player_info["home_d"]["discord_id"];
+            if(game_info["state"] == 'faceoff'){
+                player_waiting_on = player_info["home_f"]["discord_id"];
+            }
         }
     } 
     else {
