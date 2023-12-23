@@ -1,3 +1,4 @@
+const { send } = require("process");
 const user = require("../fnhl_discord_bot/commands/test_commands/user");
 
 function calculate_diff(defensive_num, offensive_num){
@@ -103,10 +104,23 @@ function user_waiting_on(game_json){
     }
     return player_waiting_on;
 }
+
+async function send_goalie_numbers(game_json, shot_side, interaction){
+    console.log(interaction);
+    if (shot_side == 'H') {
+        const goalie = await interaction.guild.members.fetch(game_json['player_info']['away_gk']['discord_id']);
+        await goalie.send(game_json['game_info']['away_gk_nums'].join(', ') + ' are your goalie numbers');
+    } 
+    else {
+        const goalie = await interaction.guild.members.fetch(game_json['player_info']['home_gk']['discord_id']);
+        await goalie.send(game_json['game_info']['home_gk_nums'].join(', ') + ' are your goalie numbers');
+    }
+}
 module.exports = {
     calculate_diff: calculate_diff,
     get_game_state: get_game_state,
     convert_num: convert_num,
     get_user_waiting_on: user_waiting_on,
     update_period: update_period,
+    send_goalie_numbers: send_goalie_numbers,
 };

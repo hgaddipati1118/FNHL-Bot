@@ -16,6 +16,10 @@ module.exports = {
         await interaction.reply('Processing deke ...');
         const deke_number = interaction.options.getInteger('deke');
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
+        if (game_json == null) {
+            await interaction.editReply('There is no active game in this channel');
+            return;
+        }
         if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;
@@ -30,7 +34,7 @@ module.exports = {
         }
         else {
             game_json['game_info']['state'] = 'deke';
-            await interaction.channel.send({ embeds: [Run_Play.run_deke(game_json, helper_methods.convert_num(deke_number))] });
+            await interaction.channel.send({ embeds: [await Run_Play.run_deke(game_json, helper_methods.convert_num(deke_number), interaction)] });
             game_json['game_info']['last_message'] = new Date();
             interaction.editReply('Deke processed :)');
         }

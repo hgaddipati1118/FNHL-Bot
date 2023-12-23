@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "google-auth-library": "^9.4.1",
+    "googleapis": "^129.0.0"
   },
   "devDependencies": {
     "eslint": "^8.54.0"

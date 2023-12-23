@@ -13,6 +13,11 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option
+                .setName('week')
+                .setDescription('Week')
+                .setRequired(true))
+        .addStringOption(option =>
+            option
                 .setName('home_team_code')
                 .setDescription('The home team')
                 .setRequired(true)
@@ -56,6 +61,7 @@ module.exports = {
     async execute(interaction) {
         await interaction.reply('creating game');
         const stadium = interaction.options.getChannel('stadium');
+        const week = interaction.options.getChannel('week');
         const home_team = interaction.options.getString('home_team_code');
         const away_team = interaction.options.getString('away_team_code');
         const home_gk = interaction.options.getUser('home_gk');
@@ -93,19 +99,46 @@ module.exports = {
             away_gk_pulled: false,
             last_message: new Date(),
         };
-
+        const home_team_json = await MongoHelper.get_document('teams', { team_code: home_team });
+        const away_team_json = await MongoHelper.get_document('teams', { team_code: away_team });
+        if (home_team_json['emoji'] == undefined) {
+            home_team_json['emoji'] = '';
+        }
+        if (home_team_json['role'] == undefined) {
+            home_team_json['role'] = '';
+        }
+        if (away_team_json['emoji'] == undefined) {
+            away_team_json['emoji'] = '';
+        }
+        if (away_team_json['role'] == undefined) {
+            away_team_json['role'] = '';
+        }
         const game_json = {
             channel_id: stadium.id,
+            week: week,
             player_info: player_info,
             home_team: home_team,
+            home_team_name: home_team_json['team_name'],
+            home_team_emoji: home_team_json['emoji'],
+            home_team_role: home_team_json['role'],
+            home_team_color: parseInt(home_team_json['hex_code'].toLowerCase().replace('#', ''), 16),
             away_team: away_team,
+            away_team_name: away_team_json['team_name'],
+            away_team_emoji: away_team_json['emoji'],
+            away_team_role: away_team_json['role'],
+            away_team_color: parseInt(away_team_json['hex_code'].toLowerCase().replace('#', ''), 16),
             game_active: true,
             game_info: game_info,
         };
         const game_start_embed = Embeds.game_start(game_json);
+        if ((await MongoHelper.get_document('games', { channel_id: stadium.id, game_active: true })) != null) {
+            await interaction.editReply('A game already exists in the stadium');
+            return;
+        }
         await stadium.send({ embeds: [game_start_embed] });
         await MongoHelper.add_game(game_json);
         await interaction.editReply('Game created!!!');
+        await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
         await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
 
     },

@@ -1,8 +1,8 @@
 const helper = require('./helper_methods');
 function game_start_embed(game_json){
     const embed = {
-        color: 0x0099ff,
-        title: `${game_json['away_team']} vs. ${game_json['home_team']}`,
+        color: game_json['home_team_color'],
+        title: `${game_json['away_team_emoji']} ${game_json['away_team']} @ ${game_json['home_team_emoji']} ${game_json['home_team']}`,
         fields: [
             {
                 name: 'Home Goalie',
@@ -47,10 +47,17 @@ function game_start_embed(game_json){
 function waiting_on_embed(game_json){
     helper.update_period(game_json);
     const game_info = game_json['game_info'];
+    let color = game_json['home_team_color'];
+    if(game_info['poss'] == 'H' && game_info['waiting_on'] == 'D'){
+        color = game_json['away_team_color'];
+    }
+    if(game_info['poss'] == 'A' && game_info['waiting_on'] == 'O'){
+        color = game_json['away_team_color'];
+    }
     const game_state = helper.get_game_state(game_json);
     const embed = {
-        color: 0x0099ff,
-        title: `${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team']} ${game_info["home_score"]} | ${game_info["period"]}`,
+        color: color,
+        title: `${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]} | ${game_info["period"]}`,
         fields: [
             {
                 name: 'Moves',
@@ -79,9 +86,13 @@ function waiting_on_embed(game_json){
 
 function play_result_embed(game_json, action, o_num, d_num, diff, result){
     const game_info = game_json['game_info'];
+    let color = game_json['home_team_color'];
+    if(game_info['poss'] == 'A'){
+        color = game_json['away_team_color'];
+    }
     const embed = {
-        color: 0x0099ff,
-        title: `${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team']} ${game_info["home_score"]} | ${game_info["period"]}`,
+        color: color,
+        title: `${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]} | ${game_info["period"]}`,
         fields: [
             {
                 name: 'Moves',

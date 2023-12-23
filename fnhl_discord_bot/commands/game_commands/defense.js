@@ -15,6 +15,10 @@ module.exports = {
         await interaction.reply({ content: 'Processing number ...', ephemeral: true });
         const faceoff_number = interaction.options.getInteger('defense');
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
+        if (game_json == null) {
+            await interaction.editReply('There is no active game in this channel');
+            return;
+        }
         if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;

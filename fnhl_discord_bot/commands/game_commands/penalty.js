@@ -16,6 +16,10 @@ module.exports = {
         await interaction.reply('Processing shot ...');
         const shot_number = interaction.options.getInteger('shot');
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
+        if (game_json == null) {
+            await interaction.editReply('There is no active game in this channel');
+            return;
+        }
         if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;
@@ -29,8 +33,10 @@ module.exports = {
             return;
         }
         else {
-            await interaction.channel.send({ embeds: [Run_Play.run_penalty(game_json, helper_methods.convert_num(shot_number))] });
+            const shot_side = game_json['game_info']['poss']; // Which side took the shot
+            await interaction.channel.send({ embeds: [await Run_Play.run_penalty(game_json, helper_methods.convert_num(shot_number), interaction)] });
             game_json['game_info']['last_message'] = new Date();
+            await helper_methods.send_goalie_numbers(game_json, shot_side);
             interaction.editReply('Shot processed :)');
         }
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
