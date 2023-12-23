@@ -4,8 +4,8 @@ const Embeds = require('../../../fnhl_game_mechanics/embed');
 const helper_methods = require('../../../fnhl_game_mechanics/helper_methods');
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('add_gk_nums')
-        .setDescription('Add numbers as a goalie')
+        .setName('replace_gk_nums')
+        .setDescription('Replace numbers as a goalie (replaces any previous numbers)')
         .addStringOption(option =>
             option
                 .setName('gk_nums')
@@ -22,12 +22,12 @@ module.exports = {
         }
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
         if (game_json['player_info']['home_gk']['discord_id'] == interaction.user.id) {
-            game_json['game_info']['home_gk_nums'] = game_json['game_info']['home_gk_nums'].concat(gk_numbers);
-            interaction.editReply(game_json['game_info']['home_gk_nums'].join(',') + ' are your goalie numbers');
+            game_json['game_info']['home_gk_nums'] = gk_numbers;
+            interaction.editReply(gk_numbers.join(',') + ' are your goalie numbers');
         }
         else if (game_json['player_info']['away_gk']['discord_id'] == interaction.user.id) {
-            game_json['game_info']['away_gk_nums'] = game_json['game_info']['away_gk_nums'].concat(gk_numbers);
-            interaction.editReply(game_json['game_info']['away_gk_nums'].join(',') + ' are your goalie numbers');
+            game_json['game_info']['away_gk_nums'] = gk_numbers;
+            interaction.editReply(gk_numbers.join(',') + ' are your goalie numbers');
         }
         else {
             interaction.editReply('You are not a goalie for a game in this channel');

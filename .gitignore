@@ -2,3 +2,5 @@
 *.env
 # Ignore Node.js modules
 node_modules/
+#Ignore aws key
+key_pair.pem

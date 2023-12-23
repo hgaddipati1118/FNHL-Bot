@@ -2,4 +2,5 @@
 config.json
 # Ignore Node.js modules
 node_modules/
-
+# Ignore stuff to connect to aws
+key_pair.pem

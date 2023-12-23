@@ -96,6 +96,23 @@ async function find_one_document(collection_name, filter) {
   }
 }
 
+//Delete a single document given filter
+async function delete_one_document(collection_name, filter) {
+  const client = create_mongo_client();
+  try {
+    const db = await create_mongo_db_conn(client);
+    const collection = db.collection(collection_name);
+    const result = await collection.deleteOne(filter);
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  } finally {
+      client.close();
+      console.log('Connection closed');
+  }
+}
+
 module.exports = {
     add_team: upsert_team,
     add_player: upsert_player,
@@ -104,5 +121,6 @@ module.exports = {
     update_player: upsert_player,
     update_game: upsert_game,
     get_distinct_values: get_distinct_values,
-    get_document: find_one_document
+    get_document: find_one_document,
+    delete_document: delete_one_document,
 };

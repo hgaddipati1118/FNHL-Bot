@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const MongoHelper = require('../../../fnhl_api/db_methods');
 const Embeds = require('../../../fnhl_game_mechanics/embed');
+const helper_methods = require('../../../fnhl_game_mechanics/helper_methods');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('start_game')
@@ -105,6 +106,7 @@ module.exports = {
         await stadium.send({ embeds: [game_start_embed] });
         await MongoHelper.add_game(game_json);
         await interaction.editReply('Game created!!!');
+        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
 
     },
     async autocomplete(interaction) {
