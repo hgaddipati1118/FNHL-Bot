@@ -76,7 +76,7 @@ async function run_faceoff(game_json, offensive_num, interaction){
     const defender = game_info['poss'] == 'H' ? game_json['player_info']['away_f']['name']: game_json['player_info']['home_f']['name'];
     const diff = helper.calculate_diff(game_info['d_num'], offensive_num);
     const play_result = simulator.simulate_faceoff(diff);
-    await add_to_play_log(game_json, 'faceoff', offensive_num, 'faceoff', diff, play_result);
+    await add_to_play_log(game_json, 'faceoff', offensive_num, 'faceoff', diff, play_result, defender, game_info['d_num']);
     const pp = game_info['moves'] <= 3;
     game_info['puck_pos'] = 'D';
     game_info['waiting_on'] = 'D';
@@ -88,7 +88,7 @@ async function run_faceoff(game_json, offensive_num, interaction){
     }
     game_info['state'] = 'defense'; 
     const embed = Embed.play_result(game_json, 'faceoff', offensive_num, game_info['d_num'], diff, play_result, 0);
-    await send_to_play_log(embed, interaction, game_json, pp, defender, game_info['d_num']);
+    await send_to_play_log(embed, interaction, game_json, pp);
     return embed;
 }
 
@@ -104,7 +104,7 @@ async function run_penalty(game_json, offensive_num, interaction){
     }
     const diff = helper.calculate_diff(goalie_num, offensive_num);
     const play_result = simulator.simulate_penalty(get_player_type(game_json), diff);
-    await add_to_play_log(game_json, pen_break, offensive_num, pen_break, diff, play_result);
+    await add_to_play_log(game_json, pen_break, offensive_num, pen_break, diff, play_result, defender, game_info['d_num']);
     game_info['waiting_on'] = 'D';
     game_info['clean_passes'] = 0;
     game_info['moves'] -= 1;
@@ -119,7 +119,7 @@ async function run_penalty(game_json, offensive_num, interaction){
     }
     game_info['state'] = 'faceoff'; 
     const embed = Embed.play_result(game_json, pen_break, offensive_num, goalie_num, diff, play_result, 0);
-    await send_to_play_log(embed, interaction, game_json, true, defender, goalie_num);
+    await send_to_play_log(embed, interaction, game_json, true);
     return embed;
 }
 
@@ -147,7 +147,7 @@ async function run_shot(game_json, offensive_num, interaction){
     } else {
         play_result = simulator.simulate_shot_normal(game_info['clean_passes'], get_player_type(game_json), diff);
     }
-    await add_to_play_log(game_json, 'normal', offensive_num, 'shot', diff, play_result);
+    await add_to_play_log(game_json, 'normal', offensive_num, 'shot', diff, play_result, defender, goalie_num);
     if(play_result == "Goal"){
         if(game_info['poss'] == 'H'){
             game_info['home_score'] += 1;
@@ -193,7 +193,7 @@ async function run_shot(game_json, offensive_num, interaction){
     game_info['clean_passes'] = 0;
     game_info['moves'] -= 1;
     const embed = Embed.play_result(game_json, 'shot', offensive_num, goalie_num, diff, play_result, 0);
-    await send_to_play_log(embed, interaction, game_json, true, defender, goalie_num );
+    await send_to_play_log(embed, interaction, game_json, true );
     return embed;
 }
 
@@ -203,7 +203,7 @@ async function run_pass(game_json, offensive_num, interaction){
     const diff = helper.calculate_diff(game_info['d_num'], offensive_num);
     const play_result = simulator.simulate_pass(get_player_type(game_json), diff);
     const old_cp = game_info['clean_passes']
-    await add_to_play_log(game_json, 'normal', offensive_num, 'pass', diff, play_result);
+    await add_to_play_log(game_json, 'normal', offensive_num, 'pass', diff, play_result, game_info['d_num'], defender);
     let pp = (game_info['clean_passes'] >= 3 || game_info['moves'] <= 3);
     if(play_result == "Goal"){
         if(game_info['poss'] == 'H'){
@@ -277,7 +277,7 @@ async function run_pass(game_json, offensive_num, interaction){
     game_info['moves'] -= 1;
     game_info['clean_passes'] = Math.min(game_info['clean_passes'], 4);
     const embed = Embed.play_result(game_json, 'pass', offensive_num, game_info['d_num'], diff, play_result, old_cp);
-    await send_to_play_log(embed, interaction, game_json, pp, game_info['d_num'], defender);
+    await send_to_play_log(embed, interaction, game_json, pp);
     return embed;
 }
 
@@ -291,7 +291,7 @@ async function run_deke(game_json, offensive_num, interaction){
     const old_cp = game_info['clean_passes']
     const diff = helper.calculate_diff(game_info['d_num'], offensive_num);
     const play_result = simulator.simulate_deke(get_player_type(game_json), diff);
-    await add_to_play_log(game_json, 'normal', offensive_num, 'deke', diff, play_result);
+    await add_to_play_log(game_json, 'normal', offensive_num, 'deke', diff, play_result, defender, game_info['d_num']);
     if(play_result == "Goal"){
         if(game_info['poss'] == 'H'){
             game_info['home_score'] += 1;
@@ -351,7 +351,7 @@ async function run_deke(game_json, offensive_num, interaction){
     game_info['moves'] -= 1;
     game_info['clean_passes'] = Math.min(game_info['clean_passes'], 4);
     const embed = Embed.play_result(game_json, 'deke', offensive_num, game_info['d_num'], diff, play_result, old_cp);
-    await send_to_play_log(embed, interaction, game_json, pp, defender, game_info['d_num']);
+    await send_to_play_log(embed, interaction, game_json, pp);
     return embed;
 }
 
