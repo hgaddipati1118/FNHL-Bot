@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
 const MongoHelper = require('../../../fnhl_api/db_methods');
-const Embeds = require('../../../fnhl_game_mechanics/embed');
-const helper_methods = require('../../../fnhl_game_mechanics/helper_methods');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('pull_goalie')
