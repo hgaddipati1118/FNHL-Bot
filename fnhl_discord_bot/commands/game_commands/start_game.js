@@ -61,7 +61,7 @@ module.exports = {
     async execute(interaction) {
         await interaction.reply('creating game');
         const stadium = interaction.options.getChannel('stadium');
-        const week = interaction.options.getChannel('week');
+        const week = interaction.options.getString('week');
         const home_team = interaction.options.getString('home_team_code');
         const away_team = interaction.options.getString('away_team_code');
         const home_gk = interaction.options.getUser('home_gk');
