@@ -4,3 +4,5 @@ config.json
 node_modules/
 # Ignore stuff to connect to aws
 key_pair.pem
+# Ignore stuff to conenct to google sheets
+fnhl-bot-a8cf044434fe.json

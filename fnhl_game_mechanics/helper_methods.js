@@ -1,6 +1,6 @@
 const { send } = require("process");
 const user = require("../fnhl_discord_bot/commands/test_commands/user");
-
+const { google } = require('googleapis');
 function calculate_diff(defensive_num, offensive_num){
     defensive_num = parseInt(defensive_num);
     offensive_num = parseInt(offensive_num);
@@ -116,6 +116,36 @@ async function send_goalie_numbers(game_json, shot_side, interaction){
         await goalie.send(game_json['game_info']['home_gk_nums'].join(', ') + ' are your goalie numbers');
     }
 }
+
+async function send_to_game_log(play){
+    const auth = new google.auth.GoogleAuth({
+    keyFile: './fnhl-bot-a8cf044434fe.json',
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    });
+
+    const authClient = await auth.getClient();
+
+    const sheets = google.sheets({ version: 'v4', auth: authClient });
+
+    const spreadsheetId = '1HVnkKHPJlXhCFsG-gkmKOWFuuiEUEgB9w7HY5QprDPw';
+    const range = 'Sheet1!A1:B1'; // Adjust sheet name and range as needed
+
+    // Append data to the sheet
+    sheets.spreadsheets.values.append({
+    spreadsheetId,
+    range,
+    valueInputOption: 'USER_ENTERED',
+    resource: { values: [play] }
+    }, (err, result) => {
+    if (err) {
+        console.error('Error:', err);
+    } else {
+        console.log('Rows appended successfully:', result.data.updates.updatedCells);
+    }
+    });
+}
+
+
 module.exports = {
     calculate_diff: calculate_diff,
     get_game_state: get_game_state,
@@ -123,4 +153,5 @@ module.exports = {
     get_user_waiting_on: user_waiting_on,
     update_period: update_period,
     send_goalie_numbers: send_goalie_numbers,
+    send_to_game_log: send_to_game_log
 };
