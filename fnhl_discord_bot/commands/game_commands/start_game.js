@@ -138,8 +138,8 @@ module.exports = {
         await stadium.send({ embeds: [game_start_embed] });
         await MongoHelper.add_game(game_json);
         await interaction.editReply('Game created!!!');
-        await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
-        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
+        await stadium.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await stadium.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
 
     },
     async autocomplete(interaction) {
