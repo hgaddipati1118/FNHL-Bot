@@ -189,7 +189,7 @@ async function run_shot(game_json, offensive_num, interaction){
     } 
     game_info['clean_passes'] = 0;
     game_info['moves'] -= 1;
-    const embed = Embed.play_result(game_json, 'shot', offensive_num, game_info['d_num'], diff, play_result, 0);
+    const embed = Embed.play_result(game_json, 'shot', offensive_num, goalie_num, diff, play_result, 0);
     await send_to_play_log(embed, interaction, game_json, true);
     return embed;
 }
