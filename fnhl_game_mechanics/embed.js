@@ -84,7 +84,7 @@ function waiting_on_embed(game_json){
     return embed;
 }
 
-function play_result_embed(game_json, action, o_num, d_num, diff, result){
+function play_result_embed(game_json, action, o_num, d_num, diff, result, cp){
     const game_info = game_json['game_info'];
     let color = game_json['home_team_color'];
     if(game_info['poss'] == 'A'){
@@ -101,7 +101,7 @@ function play_result_embed(game_json, action, o_num, d_num, diff, result){
             },
             {
                 name: 'Clean Passes',
-                value: game_info['clean_passes'],
+                value: cp,
                 inline: true,
             },
             {
