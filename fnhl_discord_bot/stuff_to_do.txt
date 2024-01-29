@@ -1,3 +1,8 @@
 * DOG Capabilities
 -> On pings add option to see last ping
 
+* Score Capabilities
+-> Show scores of games and when last play was
+
+* Active Score
+-> Show scores of active games
