@@ -112,6 +112,7 @@ module.exports = {
         await interaction.editReply('Game created!!!');
         await stadium.send({ embeds: [Embeds.waiting_on(game_json)] });
         await stadium.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
+        await stadium.send(`<@${player_info['home_gk'].discord_id}>`);
 
     },
     async autocomplete(interaction) {
