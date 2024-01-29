@@ -55,7 +55,7 @@ function convert_num(number){
 }
 
 //Moves to next period when period over
-function update_period(interaction, game_json){
+function update_period(game_json){
     if(game_json['game_info']['moves'] <= 0){
         if(game_json['game_info']['state'] == 'penalty'){
             return;
