@@ -1,15 +1,3 @@
-* Need to way make sure team has only 1 GK, 1 D, 1 F
--> Have each team have lineup
--> Need to provide command to update team lineup
-
-* Sub options
--> Need option to sub in players
-
-* Pull Goalie
--> Need option to pull goalies
-
 * DOG Capabilities
 -> On pings add option to see last ping
 
-* Goalie Numbers
--> Need options to view goalie numbers
