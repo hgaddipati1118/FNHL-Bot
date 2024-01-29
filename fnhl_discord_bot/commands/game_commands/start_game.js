@@ -22,63 +22,37 @@ module.exports = {
                 .setDescription('The home team')
                 .setRequired(true)
                 .setAutocomplete(true))
-        .addUserOption(option =>
-            option
-                .setName('home_gk')
-                .setDescription('Home Goalie')
-                .setRequired(true))
-        .addUserOption(option =>
-            option
-                .setName('home_d')
-                .setDescription('Home Defender')
-                .setRequired(true))
-        .addUserOption(option =>
-            option
-                .setName('home_f')
-                .setDescription('Home Forward')
-                .setRequired(true))
         .addStringOption(option =>
             option
                 .setName('away_team_code')
                 .setDescription('The away team')
                 .setRequired(true)
-                .setAutocomplete(true))
-        .addUserOption(option =>
-            option
-                .setName('away_gk')
-                .setDescription('Away Goalie')
-                .setRequired(true))
-        .addUserOption(option =>
-            option
-                .setName('away_d')
-                .setDescription('Away Defender')
-                .setRequired(true))
-        .addUserOption(option =>
-            option
-                .setName('away_f')
-                .setDescription('Away Forward')
-                .setRequired(true)),
+                .setAutocomplete(true)),
     async execute(interaction) {
         await interaction.reply('creating game');
         const stadium = interaction.options.getChannel('stadium');
         const week = interaction.options.getString('week');
         const home_team = interaction.options.getString('home_team_code');
         const away_team = interaction.options.getString('away_team_code');
-        const home_gk = interaction.options.getUser('home_gk');
-        const home_d = interaction.options.getUser('home_d');
-        const home_f = interaction.options.getUser('home_f');
-        const away_gk = interaction.options.getUser('away_gk');
-        const away_d = interaction.options.getUser('away_d');
-        const away_f = interaction.options.getUser('away_f');
+        const home_team_json = await MongoHelper.get_document('teams', { team_code: home_team });
+        const away_team_json = await MongoHelper.get_document('teams', { team_code: away_team });
+        if (home_team_json['lineup'] == undefined) {
+            await interaction.editReply(`${home_team} lineup not set, please set it before starting a game`);
+            return;
+        }
+        if (away_team_json['lineup'] == undefined) {
+            await interaction.editReply(`${away_team} lineup not set, please set it before starting a game`);
+            return;
+        }
 
         // Gets positions, name, and discord_id of all players
         const player_info = {
-            home_gk: await MongoHelper.get_document('players', { discord_id: home_gk.id }),
-            home_d: await MongoHelper.get_document('players', { discord_id: home_d.id }),
-            home_f: await MongoHelper.get_document('players', { discord_id: home_f.id }),
-            away_gk: await MongoHelper.get_document('players', { discord_id: away_gk.id }),
-            away_d: await MongoHelper.get_document('players', { discord_id: away_d.id }),
-            away_f: await MongoHelper.get_document('players', { discord_id: away_f.id }),
+            home_gk: await MongoHelper.get_document('players', { discord_id: home_team_json['lineup']['gk'] }),
+            home_d: await MongoHelper.get_document('players', { discord_id: home_team_json['lineup']['d'] }),
+            home_f: await MongoHelper.get_document('players', { discord_id: home_team_json['lineup']['f'] }),
+            away_gk: await MongoHelper.get_document('players', { discord_id: away_team_json['lineup']['gk'] }),
+            away_d: await MongoHelper.get_document('players', { discord_id: away_team_json['lineup']['d'] }),
+            away_f: await MongoHelper.get_document('players', { discord_id: away_team_json['lineup']['f'] }),
         };
 
         //  Initial Game State
@@ -99,8 +73,6 @@ module.exports = {
             away_gk_pulled: false,
             last_message: new Date(),
         };
-        const home_team_json = await MongoHelper.get_document('teams', { team_code: home_team });
-        const away_team_json = await MongoHelper.get_document('teams', { team_code: away_team });
         if (home_team_json['emoji'] == undefined) {
             home_team_json['emoji'] = '';
         }
