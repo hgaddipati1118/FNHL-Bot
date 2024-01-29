@@ -37,6 +37,10 @@ module.exports = {
             await interaction.channel.send({ embeds: [await Run_Play.run_deke(game_json, helper_methods.convert_num(deke_number), interaction)] });
             game_json['game_info']['last_message'] = new Date();
             interaction.editReply('Deke processed :)');
+            if (Run_Play.check_game_over(interaction, game_json)) {
+                await interaction.channel.send('Game Over');
+                return;
+            }
         }
         await MongoHelper.update_game(game_json);
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });

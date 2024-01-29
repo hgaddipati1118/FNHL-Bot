@@ -35,6 +35,10 @@ module.exports = {
         else {
             const shot_side = game_json['game_info']['poss']; // Which side took the shot
             await interaction.channel.send({ embeds: [await Run_Play.run_breakaway(game_json, helper_methods.convert_num(shot_number), interaction)] });
+            if (Run_Play.check_game_over(interaction, game_json)) {
+                await interaction.channel.send('Game Over');
+                return;
+            }
             game_json['game_info']['last_message'] = new Date();
             await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
             await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);

@@ -379,6 +379,29 @@ async function send_to_play_log(embed, interaction, game_json, pp){
     }
 }
 
+async function check_to_end_game(interaction, game_json){
+    if(game_json['game_info']['moves'] <= 0){
+        if(game_json['game_info']['state'] == 'penalty'){
+            return false;
+        }
+        if(game_json['game_info']['state'] == 'breakaway'){
+            return false;
+        }
+        if(game_json['game_info']['period'] >= 3){
+            if(game_json['game_info']['away_score'] != game_json['game_info']['home_score']){
+                await end_game(interaction, game_json);
+                return  true;
+            }
+        }
+    }
+    return false;
+}
+async function end_game(interaction, game_json){
+    const score_channel = await interaction.guild.channels.fetch(channel_ids['FNHL Scores']);
+    await MongoHelper.delete_document('games', { channel_id: interaction.channelId, game_active: true });
+    await score_channel.send(`${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
+}
+
 async function add_to_play_log(game_json, type, offensive_num, call, diff, result, defender, d_num){
     const game_info = game_json['game_info'];
     const pos_team = (game_info['poss'] == 'H') ? game_json['home_team'] : game_json['away_team']
@@ -396,4 +419,6 @@ module.exports = {
     run_shot: run_shot,
     run_deke: run_deke,
     run_pass: run_pass,
+    end_game: end_game,
+    check_game_over: check_to_end_game,
 };
