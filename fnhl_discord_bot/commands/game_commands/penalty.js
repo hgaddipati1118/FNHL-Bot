@@ -37,7 +37,7 @@ module.exports = {
             await interaction.channel.send({ embeds: [await Run_Play.run_penalty(game_json, helper_methods.convert_num(shot_number), interaction)] });
             game_json['game_info']['last_message'] = new Date();
             interaction.editReply('Shot processed :)');
-            if (Run_Play.check_game_over(interaction, game_json)) {
+            if (await Run_Play.check_game_over(interaction, game_json)) {
                 await interaction.channel.send('Game Over');
                 return;
             }
