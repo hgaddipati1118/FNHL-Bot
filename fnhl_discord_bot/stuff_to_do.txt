@@ -6,3 +6,5 @@
 
 * Active Score
 -> Show scores of active games
+
+
