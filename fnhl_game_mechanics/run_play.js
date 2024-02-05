@@ -403,7 +403,7 @@ async function end_game(interaction, game_json){
     await MongoHelper.delete_document('games', { channel_id: interaction.channelId, game_active: true });
     await interaction.channel.send("Game over");
     await interaction.channel.send(`${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
-    await score_channel.send(`${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
+    await score_channel.send(`**${game_json['week']}** ${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
 }
 
 async function add_to_play_log(game_json, type, offensive_num, call, diff, result, defender, d_num){
