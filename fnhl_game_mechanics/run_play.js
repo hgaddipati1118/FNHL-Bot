@@ -1,6 +1,7 @@
 const simulator = require('./play_simulators');
 const Embed = require('./embed');
 const helper = require('./helper_methods');
+const MongoHelper = require('../fnhl_api/db_methods');
 const { send } = require('process');
 const helper_methods = require('./helper_methods');
 const channel_ids = {
@@ -203,7 +204,7 @@ async function run_pass(game_json, offensive_num, interaction){
     const diff = helper.calculate_diff(game_info['d_num'], offensive_num);
     const play_result = simulator.simulate_pass(get_player_type(game_json), diff);
     const old_cp = game_info['clean_passes']
-    await add_to_play_log(game_json, 'normal', offensive_num, 'pass', diff, play_result, game_info['d_num'], defender);
+    await add_to_play_log(game_json, 'normal', offensive_num, 'pass', diff, play_result, defender,  game_info['d_num']);
     let pp = (game_info['clean_passes'] >= 3 || game_info['moves'] <= 3);
     if(play_result == "Goal"){
         if(game_info['poss'] == 'H'){
