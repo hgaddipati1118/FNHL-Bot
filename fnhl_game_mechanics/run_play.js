@@ -401,6 +401,8 @@ async function end_game(interaction, game_json){
     const score_channel = await interaction.guild.channels.fetch(channel_ids['FNHL Scores']);
     const game_info = game_json['game_info'];
     await MongoHelper.delete_document('games', { channel_id: interaction.channelId, game_active: true });
+    await interaction.channel.send("Game over");
+    await interaction.channel.send(`${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
     await score_channel.send(`${game_json['away_team_emoji']} ${game_json['away_team']} ${game_info["away_score"]} | ${game_json['home_team_emoji']} ${game_json['home_team']} ${game_info["home_score"]}`);
 }
 
