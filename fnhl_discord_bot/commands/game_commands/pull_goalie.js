@@ -34,7 +34,7 @@ module.exports = {
             await interaction.editReply('This is not your game, you can not pull a goalie');
             return;
         }
-        if (game_json['game_info']['poss'] != team || game_json['game_info']['state'] == 'faceoff') {
+        if (game_json['game_info']['poss'] == team || game_json['game_info']['state'] == 'faceoff') {
             if (team == 'H') {
                 game_json['game_info']['home_gk_pulled'] = !game_json['game_info']['home_gk_pulled'];
                 await interaction.editReply(`${game_json['home_team_name']} goalie is ${game_json['game_info']['home_gk_pulled'] ? 'pulled' : 'not pulled'}`);
