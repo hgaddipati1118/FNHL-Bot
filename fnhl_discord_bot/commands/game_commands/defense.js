@@ -20,22 +20,21 @@ module.exports = {
             await interaction.editReply('There is no active game in this channel');
             return;
         }
-        const dog_team = Run_Play.calc_dog(game_json);
+        const dog_team = await Run_Play.calc_dog(game_json);
         if (dog_team != false) {
             interaction.editReply('Delay of game being processed ...');
             await Run_Play.force_penalty(game_json, dog_team);
             await interaction.editReply('Penalty processed :)');
-            return;
         }
-        if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
+        else if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;
         }
-        if (game_json['game_info']['state'] != 'defense') {
+        else if (game_json['game_info']['state'] != 'defense') {
             await interaction.editReply('You seemed to use the wrong command');
             return;
         }
-        if (game_json['game_info']['waiting_on'] == 'D') {
+        else if (game_json['game_info']['waiting_on'] == 'D') {
             game_json['game_info']['d_num'] = helper_methods.convert_num(faceoff_number);
             game_json['game_info']['waiting_on'] = 'O';
             game_json['game_info']['state'] = 'deke, /pass, /shot';
