@@ -356,6 +356,14 @@ async function run_deke(game_json, offensive_num, interaction){
     return embed;
 }
 
+async function force_penalty(game_json, penalty_team){
+    const game_info = game_json['game_info'];
+    game_info['poss'] = (penalty_team == "H")?'A':'H';
+    game_info['puck_pos'] = (Math.random() <= 0.5)? 'F' : 'D';
+    game_info['state'] = 'penalty'; 
+    game_info['waiting_on'] = 'O';
+}
+
 async function process_goal(game_json, scoring_team, interaction){
     const game_info = game_json['game_info'];
     if(scoring_team == 'H'){
@@ -424,5 +432,6 @@ module.exports = {
     run_deke: run_deke,
     run_pass: run_pass,
     end_game: end_game,
+    force_penalty: force_penalty,
     check_game_over: check_to_end_game,
 };
