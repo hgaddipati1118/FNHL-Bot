@@ -35,9 +35,9 @@ module.exports = {
             interaction.editReply(game_json['game_info']['home_gk_nums'].join(', ') + ' are your goalie numbers');
         }
         else if (game_json['player_info']['away_gk']['discord_id'] == interaction.user.id) {
+            gk_team = game_json['away_team'];
             if (game_json['game_info']['away_gk_nums'].length == 0) {
-                send_ping = false;
-                gk_team = game_json['away_team'];
+                send_ping = true;
             }
             game_json['game_info']['away_gk_nums'] = game_json['game_info']['away_gk_nums'].concat(gk_numbers);
             interaction.editReply(game_json['game_info']['away_gk_nums'].join(', ') + ' are your goalie numbers');
