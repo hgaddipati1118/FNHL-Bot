@@ -5,8 +5,8 @@ const helper_methods = require('../../../fnhl_game_mechanics/helper_methods');
 const Run_Play = require('../../../fnhl_game_mechanics/run_play');
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('penalty')
-        .setDescription('Put in penalty shot number')
+        .setName('force_penalty')
+        .setDescription('Force penalty for a team')
         .addStringOption(option =>
             option
                 .setName('team')
