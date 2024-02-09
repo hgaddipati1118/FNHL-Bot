@@ -25,7 +25,7 @@ module.exports = {
             return;
         }
         await Run_Play.force_penalty(game_json, team);
-        await interaction.reply('Penalty processed :)');
+        await interaction.editReply('Penalty processed :)');
         await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
         await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
         await MongoHelper.update_game(game_json);
