@@ -1,3 +1,4 @@
 Just cmd commands helpful to know
 
 node deploy-commands.js -- to register commands
+ssh -i "key_pair.pem" ec2-user@ec2-44-204-159-216.compute-1.amazonaws.com -- Connect to aws

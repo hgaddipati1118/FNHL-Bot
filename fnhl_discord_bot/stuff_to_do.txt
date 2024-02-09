@@ -7,4 +7,10 @@
 * Active Score
 -> Show scores of active games
 
+* Typo Clarification
+-> If someone uses pass/shot/etc. incorrectly don't show number
+
+* Pull Goalie
+-> Put in embed goalie pulled
+
 
