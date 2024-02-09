@@ -71,7 +71,24 @@ function get_off_player_name(game_json){
         }
     }
 }
-
+async function calculate_dog(game_json){
+    const game_info = game_json['game_info'];
+    const last_play = game_info['last_message'];
+    const curr_time = new Date();
+    time_diff = Math.abs(last_play - curr_time) / (1000 * 60 * 60);
+    console.log(time_diff);
+    if(time_diff >= 12){
+        dog_team = 'H';
+        if(game_info['waiting_on'] == 'D' && game_info['poss'] == 'H'){
+            dog_team = 'A';
+        }
+        if(game_info['waiting_on'] == 'O' && game_info['poss'] == 'A'){
+            dog_team = 'A';
+        }
+        return dog_team;
+    }
+    return false;
+}
 async function run_faceoff(game_json, offensive_num, interaction){
     const game_info = game_json['game_info'];
     const defender = game_info['poss'] == 'H' ? game_json['player_info']['away_f']['name']: game_json['player_info']['home_f']['name'];
@@ -425,6 +442,7 @@ async function add_to_play_log(game_json, type, offensive_num, call, diff, resul
     helper_methods.send_to_game_log(play_log);
 }
 module.exports = {
+    calc_dog: calculate_dog,
     run_faceoff: run_faceoff,
     run_penalty: run_penalty,
     run_breakaway: run_penalty,
