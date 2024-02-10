@@ -379,6 +379,7 @@ async function force_penalty(game_json, penalty_team){
     game_info['puck_pos'] = (Math.random() <= 0.5)? 'F' : 'D';
     game_info['state'] = 'penalty'; 
     game_info['waiting_on'] = 'O';
+    game_info['last_message'] = new Date();
 }
 
 async function process_goal(game_json, scoring_team, interaction){

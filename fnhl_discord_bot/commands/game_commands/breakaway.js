@@ -20,15 +20,21 @@ module.exports = {
             await interaction.editReply('There is no active game in this channel');
             return;
         }
-        if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
+        const dog_team = await Run_Play.calc_dog(game_json);
+        if (dog_team != false) {
+            interaction.editReply('Delay of game being processed ...');
+            await Run_Play.force_penalty(game_json, dog_team);
+            await interaction.editReply('Penalty processed :)');
+        }
+        else if (interaction.user.id != helper_methods.get_user_waiting_on(game_json)) {
             await interaction.editReply('Not waiting on a response from you');
             return;
         }
-        if (game_json['game_info']['waiting_on'] == 'D') {
+        else if (game_json['game_info']['waiting_on'] == 'D') {
             await interaction.editReply('Not waiting on a response from you');
             return;
         }
-        if (game_json['game_info']['state'] != 'breakaway') {
+        else if (game_json['game_info']['state'] != 'breakaway') {
             await interaction.editReply('You seemed to use the wrong command');
             return;
         }
@@ -39,12 +45,12 @@ module.exports = {
                 await interaction.channel.send('Game Over');
                 return;
             }
-            game_json['game_info']['last_message'] = new Date();
-            await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
-            await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
-            await MongoHelper.update_game(game_json);
             await helper_methods.send_goalie_numbers(game_json, shot_side, interaction);
-            interaction.editReply('Shot processed :)');
         }
+        game_json['game_info']['last_message'] = new Date();
+        await interaction.channel.send({ embeds: [Embeds.waiting_on(game_json)] });
+        await interaction.channel.send(`<@${helper_methods.get_user_waiting_on(game_json)}>`);
+        await MongoHelper.update_game(game_json);
+        interaction.editReply('Shot processed :)');
     },
 };
