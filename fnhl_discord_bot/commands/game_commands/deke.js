@@ -13,7 +13,7 @@ module.exports = {
                 .setDescription('Numbers will be converted to range between 1-1000')
                 .setRequired(true)),
     async execute(interaction) {
-        await interaction.reply('Processing deke ...');
+        await interaction.reply({ content: 'Processing deke ...', ephemeral: true });
         const deke_number = interaction.options.getInteger('deke');
         const game_json = await MongoHelper.get_document('games', { channel_id: interaction.channelId, game_active: true });
         if (game_json == null) {
