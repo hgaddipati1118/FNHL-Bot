@@ -106,14 +106,18 @@ function user_waiting_on(game_json){
 }
 
 async function send_goalie_numbers(game_json, shot_side, interaction){
-    console.log(interaction);
-    if (shot_side == 'H') {
-        const goalie = await interaction.guild.members.fetch(game_json['player_info']['away_gk']['discord_id']);
-        await goalie.send(game_json['game_info']['away_gk_nums'].join(', ') + ' are your goalie numbers');
-    } 
-    else {
-        const goalie = await interaction.guild.members.fetch(game_json['player_info']['home_gk']['discord_id']);
-        await goalie.send(game_json['game_info']['home_gk_nums'].join(', ') + ' are your goalie numbers');
+    try {
+        if (shot_side == 'H') {
+            const goalie = await interaction.guild.members.fetch(game_json['player_info']['away_gk']['discord_id']);
+            await goalie.send(game_json['game_info']['away_gk_nums'].join(', ') + ' are your goalie numbers');
+        } 
+        else {
+            const goalie = await interaction.guild.members.fetch(game_json['player_info']['home_gk']['discord_id']);
+            await goalie.send(game_json['game_info']['home_gk_nums'].join(', ') + ' are your goalie numbers');
+        }
+    } catch (error) {
+        // Handle the error
+        console.error('An error occurred with dming goalies:', error.message);
     }
 }
 
